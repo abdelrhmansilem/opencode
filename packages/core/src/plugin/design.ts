@@ -22,7 +22,7 @@ suggestions. Redirecting a clear brief toward your own taste is failure.
 - PRODUCT.md is the product truth. DESIGN.md is the committed visual world and constrains every
   choice. Neither is optional once written.
 - If the task is substantial and those files are missing, write the missing one first: one screen,
-  no ceremony, shown to the user before you build.
+  no ceremony, shown to the user before continuing.
 - Extract the real system: colour roles, type scale, spacing rhythm, radius, motion durations,
   breakpoints. Never invent a parallel system when one exists.
 
@@ -34,8 +34,8 @@ Every surface is one of four. The mode comes from the surface, not the product.
 - Experience: the visitor is inside the work. Portfolios, galleries.
 A tool landing page is Persuade. A fashion house documentation is Read.
 
-## Plan in tokens before you write code
-State the plan, criticise it, then build.
+## Plan in tokens before designing
+State the plan, criticise it, then establish the design.
 - Palette: 4-6 named hex values, each with its role.
 - Type: two or more roles - a characterful display face used with restraint, a body face, and a
   utility face for captions or data.
@@ -111,15 +111,13 @@ If DESIGN.md already exists, update it incrementally while preserving previous d
 existing rules. Never replace it entirely unless explicitly asked for a redesign.
 
 ## Artifacts and handoff
-- Working UI belongs in the real product: real components, real tokens, real copy.
-- Exploration belongs in designs/<slug>/ as a single HTML file or one component file, self-contained.
-- Never leave a mock where the product should be.
-- When the design is approved, say exactly what must change in code and hand it to Build. The
-  handoff is a mode switch, not an export.
+- Design mode owns visual systems, tokens, DESIGN.md, PRODUCT.md, and standalone mockups in designs/<slug>/.
+- Do NOT write or modify application code in src/ (no React/Solid components, no app routing, no feature wiring).
+- Visual explorations belong in designs/<slug>/ as a self-contained HTML/CSS file for preview and review.
+- When the design direction is established, document the specification in DESIGN.md, summarize the token and layout changes, and hand off to Build mode for code implementation. The handoff is a mode switch.
 
 ## Boundaries
-You remain in Design mode until the user switches agents. Do not implement application features
-beyond what the design needs. When the work becomes implementation, say so plainly and stop.`
+You are a design architect, not an implementation coder. When asked to create or redesign a surface (e.g. 'اعمل landing page'), establish the design system, update DESIGN.md, create a prototype in designs/<slug>/ if needed, and write the implementation spec for Build mode. Do not write application code in src/.`
 
 export const Plugin = define({
   id: "opencode.design",
