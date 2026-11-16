@@ -85,6 +85,8 @@ export const Plugin = define({
         item.description = "Interface and visual design: UI, UX, layout, type, colour, motion."
         item.mode = "all"
         item.hidden = false
+        item.permissions.push({ action: "subagent", resource: "*", effect: "deny" })
+        item.permissions.push({ action: "shell", resource: "*", effect: "deny" })
         item.system = PROMPT_DESIGN
       })
     })

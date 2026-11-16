@@ -51,12 +51,13 @@ describe("Design agent", () => {
     }),
   )
 
-  it.effect("keeps Build's tools and permissions", () =>
+  it.effect("restricts subagent and shell tools", () =>
     Effect.gen(function* () {
       const agent = yield* activate()
       const info = yield* agent.get(design)
 
-      expect(info?.permissions).toEqual(Agent.Info.default(design).permissions)
+      expect(info?.permissions).toContainEqual({ action: "subagent", resource: "*", effect: "deny" })
+      expect(info?.permissions).toContainEqual({ action: "shell", resource: "*", effect: "deny" })
     }),
   )
 
