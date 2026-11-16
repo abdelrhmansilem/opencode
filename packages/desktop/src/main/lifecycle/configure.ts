@@ -31,6 +31,11 @@ export function configureApplication() {
   // Chromium animates each mouse-wheel notch on Linux; native Linux apps scroll by the full delta immediately.
   if (process.platform === "linux") app.commandLine.appendSwitch("disable-smooth-scrolling")
 
+  if (process.env.OPENCODE_DISABLE_GPU === "1") {
+    app.commandLine.appendSwitch("disable-gpu")
+    app.commandLine.appendSwitch("disable-software-rasterizer")
+  }
+
   const build = { packaged: app.isPackaged, channel: CHANNEL }
   const debugPort = remoteDebuggingPort(build, process.env.OPENCODE_DESKTOP_REMOTE_DEBUGGING_PORT)
 

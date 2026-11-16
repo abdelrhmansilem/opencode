@@ -1,4 +1,5 @@
 import { $ } from "bun"
+import { existsSync } from "node:fs"
 import { constants, setPriority } from "node:os"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -35,13 +36,18 @@ function selectOptions(): DevOptions {
   const args = process.argv.slice(2)
   const build = args.indexOf("--build-server")
   const download = args.indexOf("--download-server")
+  const disableGpu = args.indexOf("--disable-gpu")
+
+  if (disableGpu >= 0) {
+    process.env.OPENCODE_DISABLE_GPU = "1"
+  }
 
   if (build >= 0 && download >= 0) {
     throw new Error("--build-server and --download-server cannot be used together")
   }
 
   if (download >= 0 && !args[download + 1]) throw new Error("--download-server requires a version")
-  const consumed = new Set([build, download, download >= 0 ? download + 1 : -1])
+  const consumed = new Set([build, download, download >= 0 ? download + 1 : -1, disableGpu])
 
   return {
     server: download >= 0 ? { type: "download", version: args[download + 1] } : { type: "build" },
@@ -52,7 +58,8 @@ function selectOptions(): DevOptions {
 async function prepareServer(source: ServerSource) {
   if (source.type === "download")
     return downloadCliToResources(source.version, windowsify("resources/opencode-cli-dev"))
-  if (process.env.OPENCODE_SKIP_WEB_BUILD !== "1") buildWebUi()
+  if (process.env.OPENCODE_SKIP_WEB_BUILD !== "1" && !existsSync(join(import.meta.dirname, "../../app/dist/index.html")))
+    buildWebUi()
   process.env.OPENCODE_DESKTOP_CLI_DEV = join(import.meta.dirname, "../../cli")
 
   if (process.platform !== "win32") return
